@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GiatGuard - Register</title>
+</head>
+
+<body>
+
+    <h1>GiatGuard</h1>
+    <h2>Create Account</h2>
+
+    <form action="/register" method="POST">
+
+        <label>Name:</label><br>
+        <input type="text" name="name" required>
+        <br><br>
+
+        <label>Email:</label><br>
+        <input type="email" name="email" required>
+        <br><br>
+
+        <label>Password:</label><br>
+        <input type="password" name="password" required>
+        <br><br>
+
+        <label>Register As:</label><br>
+
+        <select name="role" required>
+            <option value="Doctor">Doctor</option>
+            <option value="Patient">Patient</option>
+        </select>
+
+        <br><br>
+
+        <button type="submit">Register</button>
+
+    </form>
+
+    <br>
+
+    <a href="/">Already have an account? Login</a>
+
+</body>
+</html>

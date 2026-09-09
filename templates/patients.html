@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>GiatGuard - Patients</title>
+
+    <style>
+
+        body {
+            font-family: Arial;
+            background: #f4f7fb;
+            margin: 0;
+        }
+
+        .header {
+            background: #0b1f3a;
+            color: white;
+            padding: 25px;
+        }
+
+        .container {
+            width: 90%;
+            margin: 30px auto;
+        }
+
+        table {
+            width: 100%;
+            background: white;
+            border-collapse: collapse;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+        }
+
+        th {
+            background: #1769aa;
+            color: white;
+        }
+
+        .button {
+            background: #1769aa;
+            color: white;
+            padding: 8px 14px;
+            text-decoration: none;
+            border-radius: 6px;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="header">
+
+    <h1>GiatGuard</h1>
+
+    <h2>Registered Patients</h2>
+
+</div>
+
+
+<div class="container">
+
+
+    {% if patients %}
+
+    <table>
+
+        <tr>
+
+            <th>Patient</th>
+            <th>Age</th>
+            <th>Baseline Pressure</th>
+            <th>Baseline Angle</th>
+            <th>Target Steps</th>
+            <th>Action</th>
+
+        </tr>
+
+
+        {% for patient in patients %}
+
+        <tr>
+
+            <td>{{ patient["name"] }}</td>
+
+            <td>{{ patient["age"] }}</td>
+
+            <td>{{ patient["baseline_pressure"] }}</td>
+
+            <td>{{ patient["baseline_angle"] }}°</td>
+
+            <td>{{ patient["target_steps"] }}</td>
+
+            <td>
+
+                <a
+                    class="button"
+                    href="{{ url_for('patient_history', patient_id=patient['id']) }}"
+                >
+                    View History
+                </a>
+
+            </td>
+
+        </tr>
+
+        {% endfor %}
+
+    </table>
+
+
+    {% else %}
+
+    <h2>No patients registered yet.</h2>
+
+    {% endif %}
+
+
+    <a
+        class="back"
+        href="{{ url_for('doctor_dashboard', doctor_id=doctor_id) }}"
+    >
+        ← Back to Dashboard
+    </a>
+
+
+</div>
+
+</body>
+
+</html>

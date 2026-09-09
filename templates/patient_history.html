@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>GiatGuard - Patient History</title>
+
+    <style>
+
+        body {
+            font-family: Arial;
+            background: #f4f7fb;
+            margin: 0;
+        }
+
+        .header {
+            background: #0b1f3a;
+            color: white;
+            padding: 25px;
+        }
+
+        .container {
+            width: 90%;
+            margin: 30px auto;
+        }
+
+        .cards {
+            display: flex;
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            flex: 1;
+            border-radius: 12px;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 25px;
+            background: white;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 13px;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+        }
+
+        th {
+            background: #1769aa;
+            color: white;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 12px 18px;
+            margin-top: 20px;
+            margin-right: 10px;
+            background: #1769aa;
+            color: white;
+            text-decoration: none;
+            border-radius: 7px;
+        }
+
+        .normal {
+            color: green;
+            font-weight: bold;
+        }
+
+        .abnormal {
+            color: red;
+            font-weight: bold;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="header">
+
+    <h1>GiatGuard</h1>
+
+    <h2>Patient History</h2>
+
+</div>
+
+
+<div class="container">
+
+
+    <h2>{{ patient["name"] }}</h2>
+
+    <p>
+        Age: {{ patient["age"] }}
+    </p>
+
+
+    <div class="cards">
+
+
+        <div class="card">
+
+            <h3>Baseline Pressure</h3>
+
+            <h2>
+                {{ patient["baseline_pressure"] }}
+            </h2>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>Baseline Gait Angle</h3>
+
+            <h2>
+                {{ patient["baseline_angle"] }}°
+            </h2>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>Walking Target</h3>
+
+            <h2>
+                {{ patient["target_steps"] }}
+            </h2>
+
+        </div>
+
+
+    </div>
+
+
+    <h2>Gait History</h2>
+
+
+    {% if history %}
+
+    <table>
+
+        <tr>
+
+            <th>Date</th>
+            <th>Steps</th>
+            <th>Pressure</th>
+            <th>Gait Angle</th>
+            <th>Status</th>
+
+        </tr>
+
+
+        {% for row in history %}
+
+        <tr>
+
+            <td>{{ row["date"] }}</td>
+
+            <td>{{ row["steps"] }}</td>
+
+            <td>{{ row["pressure"] }}</td>
+
+            <td>{{ row["gait_angle"] }}°</td>
+
+            <td>
+
+                {% if row["status"] == "Normal" %}
+
+                <span class="normal">
+                    ✓ Normal
+                </span>
+
+                {% else %}
+
+                <span class="abnormal">
+                    ⚠ Abnormal
+                </span>
+
+                {% endif %}
+
+            </td>
+
+        </tr>
+
+        {% endfor %}
+
+    </table>
+
+    {% else %}
+
+    <p>
+        No gait data available yet.
+    </p>
+
+    {% endif %}
+
+
+    <br>
+
+
+    <a
+        class="button"
+        href="{{ url_for('add_demo_data', patient_id=patient['id']) }}"
+    >
+        📊 Add Demo Gait Data
+    </a>
+
+
+    <a
+        class="button"
+        href="{{ url_for('gait_analysis', patient_id=patient['id']) }}"
+    >
+        📈 Gait Analysis
+    </a>
+
+
+    <a
+        class="button"
+        href="{{ url_for('exercise_monitoring', patient_id=patient['id']) }}"
+    >
+        🏃 Exercise Monitoring
+    </a>
+
+
+</div>
+
+</body>
+
+</html>

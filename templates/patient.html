@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>GiatGuard - Patient Dashboard</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #222;
+        }
+
+        /* ================= HEADER ================= */
+
+        .header {
+            background: #0b1f3a;
+            color: white;
+            padding: 25px 40px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 32px;
+        }
+
+        .header p {
+            margin: 8px 0 0;
+        }
+
+        /* ================= CONTAINER ================= */
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 30px auto;
+        }
+
+        /* ================= WELCOME ================= */
+
+        .welcome {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .welcome h2 {
+            color: #0b1f3a;
+            margin-top: 0;
+        }
+
+        /* ================= CARDS ================= */
+
+        .cards {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 25px;
+        }
+
+        .card {
+            flex: 1;
+            min-width: 210px;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .card h3 {
+            color: #555;
+            margin-top: 0;
+        }
+
+        .value {
+            font-size: 30px;
+            font-weight: bold;
+            color: #1769aa;
+        }
+
+        /* ================= STATUS ================= */
+
+        .status {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .normal {
+            color: green;
+        }
+
+        .abnormal {
+            color: red;
+        }
+
+        .waiting {
+            color: #777;
+        }
+
+        /* ================= PROGRESS ================= */
+
+        .progress-box {
+            background: white;
+            margin-top: 25px;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 25px;
+            background: #dddddd;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 70%;
+            background: #1769aa;
+            border-radius: 20px;
+        }
+
+        /* ================= INFORMATION ================= */
+
+        .info {
+            background: white;
+            margin-top: 25px;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .info h2 {
+            color: #0b1f3a;
+        }
+
+        /* ================= BUTTONS ================= */
+
+        .buttons {
+            margin-top: 25px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 13px 20px;
+            background: #1769aa;
+            color: white;
+            text-decoration: none;
+            border-radius: 7px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        .button:hover {
+            background: #0d4f82;
+        }
+
+        .logout {
+            background: #555555;
+        }
+
+        .logout:hover {
+            background: #333333;
+        }
+
+        /* ================= MOBILE ================= */
+
+        @media (max-width: 700px) {
+
+            .container {
+                width: 95%;
+            }
+
+            .header {
+                padding: 20px;
+            }
+
+            .card {
+                min-width: 100%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ================= HEADER ================= -->
+
+<div class="header">
+
+    <h1>GiatGuard</h1>
+
+    <p>Smart Rehabilitation Insole</p>
+
+</div>
+
+
+<!-- ================= MAIN CONTAINER ================= -->
+
+<div class="container">
+
+
+    <!-- ================= WELCOME ================= -->
+
+    <div class="welcome">
+
+        <h2>
+            Welcome, {{ patient["name"] }} 👋
+        </h2>
+
+        <p>
+            Monitor your rehabilitation progress,
+            walking activity and gait condition.
+        </p>
+
+    </div>
+
+
+    <!-- ================= DASHBOARD CARDS ================= -->
+
+    <div class="cards">
+
+
+        <!-- TODAY STEPS -->
+
+        <div class="card">
+
+            <h3>🚶 Today's Steps</h3>
+
+            <div class="value">
+                {{ today_steps }}
+            </div>
+
+            <p>
+                Target:
+                {{ patient["target_steps"] }}
+                steps
+            </p>
+
+        </div>
+
+
+        <!-- GAIT ANGLE -->
+
+        <div class="card">
+
+            <h3>📐 Gait Angle</h3>
+
+            <div class="value">
+                {{ gait_angle }}°
+            </div>
+
+            <p>
+                Average:
+                {{ avg_angle }}°
+            </p>
+
+        </div>
+
+
+        <!-- PRESSURE -->
+
+        <div class="card">
+
+            <h3>👣 Plantar Pressure</h3>
+
+            <div class="value">
+                {{ pressure }}
+            </div>
+
+            <p>
+                Average:
+                {{ avg_pressure }}
+            </p>
+
+        </div>
+
+
+        <!-- GAIT STATUS -->
+
+        <div class="card">
+
+            <h3>🩺 Gait Status</h3>
+
+
+            {% if status == "Normal" %}
+
+                <div class="status normal">
+                    ✓ Normal
+                </div>
+
+            {% elif status == "Abnormal" %}
+
+                <div class="status abnormal">
+                    ⚠ Abnormal
+                </div>
+
+            {% else %}
+
+                <div class="status waiting">
+                    Waiting
+                </div>
+
+            {% endif %}
+
+
+        </div>
+
+
+    </div>
+
+
+    <!-- ================= WALKING PROGRESS ================= -->
+
+    <div class="progress-box">
+
+        <h2>🎯 Daily Walking Progress</h2>
+
+        <p>
+            {{ today_steps }}
+            /
+            {{ patient["target_steps"] }}
+            steps
+        </p>
+
+
+        <div class="progress-bar">
+
+            <div class="progress-fill"></div>
+
+        </div>
+
+
+        <p>
+            Walking progress
+        </p>
+
+    </div>
+
+
+    <!-- ================= REHABILITATION INFO ================= -->
+
+    <div class="info">
+
+        <h2>🏃 Rehabilitation Monitoring</h2>
+
+        <p>
+            GiatGuard continuously monitors your
+            walking pattern and gait condition.
+        </p>
+
+        <p>
+            Your gait data helps the doctor
+            understand your rehabilitation progress.
+        </p>
+
+        <p>
+            Continue your recommended rehabilitation
+            exercises and walking activities.
+        </p>
+
+    </div>
+
+
+    <!-- ================= BUTTONS ================= -->
+
+    <div class="buttons">
+
+
+        <a
+            class="button"
+            href="{{ url_for('patient_history', patient_id=patient['id']) }}"
+        >
+            📋 My Gait History
+        </a>
+
+
+        <a
+            class="button"
+            href="{{ url_for('gait_analysis', patient_id=patient['id']) }}"
+        >
+            📈 Gait Analysis
+        </a>
+
+
+        <a
+            class="button"
+            href="{{ url_for('exercise_monitoring', patient_id=patient['id']) }}"
+        >
+            🏃 Exercise Monitoring
+        </a>
+
+
+        <a
+            class="button logout"
+            href="/"
+        >
+            Logout
+        </a>
+
+
+    </div>
+
+
+</div>
+
+
+</body>
+
+</html>

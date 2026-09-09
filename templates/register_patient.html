@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>GiatGuard - Register Patient</title>
+
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7fb;
+            margin: 0;
+        }
+
+        .header {
+            background-color: #0b1f3a;
+            color: white;
+            padding: 25px;
+        }
+
+        .container {
+            width: 600px;
+            margin: 40px auto;
+        }
+
+        .form-box {
+            background: white;
+            padding: 35px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.15);
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 15px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-top: 7px;
+            box-sizing: border-box;
+        }
+
+        button {
+            margin-top: 25px;
+            width: 100%;
+            padding: 14px;
+            background-color: #1769aa;
+            color: white;
+            border: none;
+            border-radius: 7px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0d4f82;
+        }
+
+        .back {
+            display: block;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="header">
+
+    <h1>GiatGuard</h1>
+
+    <h2>Register New Patient</h2>
+
+</div>
+
+
+<div class="container">
+
+
+    <div class="form-box">
+
+
+        <h2>Patient Information</h2>
+
+
+        <form
+            action="{{ url_for('register_patient', doctor_id=doctor_id) }}"
+            method="POST"
+        >
+
+
+            <label>Patient Name</label>
+
+            <input
+                type="text"
+                name="name"
+                placeholder="Enter patient name"
+                required
+            >
+
+
+            <label>Patient Email</label>
+
+            <input
+                type="email"
+                name="email"
+                placeholder="Enter patient email"
+            >
+
+
+            <label>Age</label>
+
+            <input
+                type="number"
+                name="age"
+                placeholder="Enter age"
+                min="1"
+                max="120"
+                required
+            >
+
+
+            <label>Baseline Toe / Forefoot Pressure</label>
+
+            <input
+                type="number"
+                name="baseline_pressure"
+                placeholder="Enter baseline pressure"
+                step="0.01"
+                required
+            >
+
+
+            <label>Baseline Gait Angle</label>
+
+            <input
+                type="number"
+                name="baseline_angle"
+                placeholder="Enter gait angle in degrees"
+                step="0.01"
+                required
+            >
+
+
+            <label>Daily Walking Target (Steps)</label>
+
+            <input
+                type="number"
+                name="target_steps"
+                placeholder="Example: 5000"
+                min="1"
+                required
+            >
+
+
+            <button type="submit">
+                Save Patient
+            </button>
+
+
+        </form>
+
+
+        <a
+            class="back"
+            href="{{ url_for('doctor_dashboard', doctor_id=doctor_id) }}"
+        >
+            ← Back to Doctor Dashboard
+        </a>
+
+
+    </div>
+
+
+</div>
+
+
+</body>
+
+</html>

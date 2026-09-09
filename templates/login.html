@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GiatGuard - Login</title>
+</head>
+
+<body>
+
+    <h1>GiatGuard</h1>
+    <h2>Smart Rehabilitation Insole</h2>
+
+    <form action="/login" method="POST">
+
+        <label>Email:</label><br>
+        <input type="email" name="email" required><br><br>
+
+        <label>Password:</label><br>
+        <input type="password" name="password" required><br><br>
+
+        <label>Login As:</label><br>
+        <select name="role" required>
+            <option value="Doctor">Doctor</option>
+            <option value="Patient">Patient</option>
+        </select><br><br>
+
+        <button type="submit">Login</button>
+
+    </form>
+
+    <br>
+
+    <p>Don't have an account?</p>
+    <a href="/register">Create Account</a>
+
+</body>
+</html>

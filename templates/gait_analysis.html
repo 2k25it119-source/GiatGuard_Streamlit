@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>GiatGuard - Gait Analysis</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #222;
+        }
+
+        .header {
+            background: #0b1f3a;
+            color: white;
+            padding: 25px 40px;
+        }
+
+        .header h1 {
+            margin: 0;
+        }
+
+        .header p {
+            margin-bottom: 0;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 30px auto;
+        }
+
+        .patient-box,
+        .chart-box,
+        .table-box {
+            background: white;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .patient-box h2,
+        .chart-box h2,
+        .table-box h2 {
+            color: #0b1f3a;
+        }
+
+        .cards {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 25px;
+        }
+
+        .card {
+            flex: 1;
+            min-width: 200px;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .card h3 {
+            margin-top: 0;
+            color: #555;
+        }
+
+        .value {
+            font-size: 28px;
+            font-weight: bold;
+            color: #1769aa;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 350px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #1769aa;
+            color: white;
+            padding: 14px;
+        }
+
+        td {
+            padding: 14px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .normal {
+            color: green;
+            font-weight: bold;
+        }
+
+        .abnormal {
+            color: red;
+            font-weight: bold;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 12px 20px;
+            background: #1769aa;
+            color: white;
+            text-decoration: none;
+            border-radius: 7px;
+            margin-right: 10px;
+            margin-top: 10px;
+        }
+
+        .button:hover {
+            background: #0d4f82;
+        }
+
+        .secondary {
+            background: #555;
+        }
+
+        .secondary:hover {
+            background: #333;
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 30px;
+        }
+
+        @media(max-width: 700px) {
+
+            .container {
+                width: 95%;
+            }
+
+            .chart-container {
+                height: 280px;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="header">
+
+    <h1>GiatGuard</h1>
+
+    <p>Smart Rehabilitation Insole</p>
+
+</div>
+
+
+<div class="container">
+
+
+    <!-- PATIENT DETAILS -->
+
+    <div class="patient-box">
+
+        <h2>📊 Gait Analysis</h2>
+
+        <p>
+            <strong>Patient Name:</strong>
+            {{ patient["name"] }}
+        </p>
+
+        <p>
+            <strong>Age:</strong>
+            {{ patient["age"] }}
+        </p>
+
+        <p>
+            <strong>Baseline Pressure:</strong>
+            {{ patient["baseline_pressure"] }}
+        </p>
+
+        <p>
+            <strong>Baseline Gait Angle:</strong>
+            {{ patient["baseline_angle"] }}°
+        </p>
+
+        <p>
+            <strong>Walking Target:</strong>
+            {{ patient["target_steps"] }} steps
+        </p>
+
+    </div>
+
+
+    {% if history %}
+
+
+    <!-- SUMMARY -->
+
+    <div class="cards">
+
+        <div class="card">
+
+            <h3>Recorded Days</h3>
+
+            <div class="value">
+                {{ history|length }}
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>Latest Steps</h3>
+
+            <div class="value">
+                {{ history[-1]["steps"] }}
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>Latest Angle</h3>
+
+            <div class="value">
+                {{ history[-1]["gait_angle"] }}°
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>Latest Pressure</h3>
+
+            <div class="value">
+                {{ history[-1]["pressure"] }}
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- STEPS -->
+
+    <div class="chart-box">
+
+        <h2>🚶 Walking Progress</h2>
+
+        <div class="chart-container">
+
+            <canvas id="stepsChart"></canvas>
+
+        </div>
+
+    </div>
+
+
+    <!-- ANGLE -->
+
+    <div class="chart-box">
+
+        <h2>📐 Gait Angle Analysis</h2>
+
+        <div class="chart-container">
+
+            <canvas id="angleChart"></canvas>
+
+        </div>
+
+    </div>
+
+
+    <!-- PRESSURE -->
+
+    <div class="chart-box">
+
+        <h2>👣 Plantar Pressure Analysis</h2>
+
+        <div class="chart-container">
+
+            <canvas id="pressureChart"></canvas>
+
+        </div>
+
+    </div>
+
+
+    <!-- TABLE -->
+
+    <div class="table-box">
+
+        <h2>📋 Gait History</h2>
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Date</th>
+                    <th>Steps</th>
+                    <th>Pressure</th>
+                    <th>Gait Angle</th>
+                    <th>Status</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for row in history %}
+
+                <tr>
+
+                    <td>
+                        {{ row["date"] }}
+                    </td>
+
+                    <td>
+                        {{ row["steps"] }}
+                    </td>
+
+                    <td>
+                        {{ row["pressure"] }}
+                    </td>
+
+                    <td>
+                        {{ row["gait_angle"] }}°
+                    </td>
+
+                    <td>
+
+                        {% if row["status"] == "Normal" %}
+
+                        <span class="normal">
+                            ✓ Normal
+                        </span>
+
+                        {% else %}
+
+                        <span class="abnormal">
+                            ⚠ Abnormal
+                        </span>
+
+                        {% endif %}
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <!-- BUTTONS -->
+
+    <div>
+
+        <a
+            class="button secondary"
+            href="{{ url_for('patient_history', patient_id=patient['id']) }}"
+        >
+            ← Patient History
+        </a>
+
+        <a
+            class="button"
+            href="{{ url_for('exercise_monitoring', patient_id=patient['id']) }}"
+        >
+            🏃 Exercise Monitoring
+        </a>
+
+    </div>
+
+
+    <!-- CHART DATA -->
+
+    <script id="chartData" type="application/json">
+
+    {
+        "dates": [
+            {% for row in history %}
+                "{{ row['date'] }}"{% if not loop.last %},{% endif %}
+            {% endfor %}
+        ],
+
+        "steps": [
+            {% for row in history %}
+                {{ row['steps'] or 0 }}{% if not loop.last %},{% endif %}
+            {% endfor %}
+        ],
+
+        "angles": [
+            {% for row in history %}
+                {{ row['gait_angle'] or 0 }}{% if not loop.last %},{% endif %}
+            {% endfor %}
+        ],
+
+        "pressures": [
+            {% for row in history %}
+                {{ row['pressure'] or 0 }}{% if not loop.last %},{% endif %}
+            {% endfor %}
+        ]
+    }
+
+    </script>
+
+
+    <script>
+
+        const data =
+            JSON.parse(
+                document.getElementById("chartData").textContent
+            );
+
+
+        const dates = data.dates;
+        const steps = data.steps;
+        const angles = data.angles;
+        const pressures = data.pressures;
+
+
+        /* STEPS CHART */
+
+        new Chart(
+            document.getElementById("stepsChart"),
+            {
+                type: "line",
+
+                data: {
+                    labels: dates,
+
+                    datasets: [
+                        {
+                            label: "Daily Steps",
+                            data: steps,
+                            borderWidth: 3,
+                            tension: 0.3,
+                            fill: false
+                        }
+                    ]
+                },
+
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: "Steps"
+                            }
+                        }
+                    }
+                }
+            }
+        );
+
+
+        /* ANGLE CHART */
+
+        new Chart(
+            document.getElementById("angleChart"),
+            {
+                type: "line",
+
+                data: {
+                    labels: dates,
+
+                    datasets: [
+                        {
+                            label: "Gait Angle",
+                            data: angles,
+                            borderWidth: 3,
+                            tension: 0.3,
+                            fill: false
+                        }
+                    ]
+                },
+
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+
+                    scales: {
+                        y: {
+                            title: {
+                                display: true,
+                                text: "Angle (Degrees)"
+                            }
+                        }
+                    }
+                }
+            }
+        );
+
+
+        /* PRESSURE CHART */
+
+        new Chart(
+            document.getElementById("pressureChart"),
+            {
+                type: "line",
+
+                data: {
+                    labels: dates,
+
+                    datasets: [
+                        {
+                            label: "Plantar Pressure",
+                            data: pressures,
+                            borderWidth: 3,
+                            tension: 0.3,
+                            fill: false
+                        }
+                    ]
+                },
+
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: "Pressure"
+                            }
+                        }
+                    }
+                }
+            }
+        );
+
+    </script>
+
+
+    {% else %}
+
+
+    <!-- NO DATA -->
+
+    <div class="chart-box no-data">
+
+        <h2>📊 No Gait Data Available</h2>
+
+        <p>
+            No gait monitoring data has been recorded for this patient.
+        </p>
+
+        <a
+            class="button"
+            href="{{ url_for('add_demo_data', patient_id=patient['id']) }}"
+        >
+            ➕ Add Demo Gait Data
+        </a>
+
+    </div>
+
+
+    <div>
+
+        <a
+            class="button secondary"
+            href="{{ url_for('patient_history', patient_id=patient['id']) }}"
+        >
+            ← Patient History
+        </a>
+
+    </div>
+
+
+    {% endif %}
+
+
+</div>
+
+
+</body>
+
+</html>

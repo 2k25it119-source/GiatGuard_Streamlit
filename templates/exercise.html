@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>GiatGuard - Exercise Monitoring</title>
+
+    <style>
+
+        body {
+            font-family: Arial;
+            background: #f4f7fb;
+            margin: 0;
+        }
+
+        .header {
+            background: #0b1f3a;
+            color: white;
+            padding: 25px;
+        }
+
+        .container {
+            width: 80%;
+            margin: 40px auto;
+        }
+
+        .box {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .angle {
+            font-size: 50px;
+            font-weight: bold;
+        }
+
+        .correct {
+            color: green;
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .info {
+            margin-top: 25px;
+            padding: 20px;
+            background: #eef5ff;
+            border-radius: 10px;
+        }
+
+        .button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 18px;
+            background: #1769aa;
+            color: white;
+            text-decoration: none;
+            border-radius: 7px;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="header">
+
+    <h1>GiatGuard</h1>
+
+    <h2>Exercise Monitoring</h2>
+
+</div>
+
+
+<div class="container">
+
+
+    <div class="box">
+
+        <h2>
+            Patient: {{ patient["name"] }}
+        </h2>
+
+
+        <p>Current Gait Angle</p>
+
+        <div class="angle">
+            12°
+        </div>
+
+
+        <div class="correct">
+            ✓ Exercise Performed Correctly
+        </div>
+
+
+        <div class="info">
+
+            <h3>AI Exercise Analysis</h3>
+
+            <p>
+                Target Angle: 10° – 15°
+            </p>
+
+            <p>
+                Current Angle: 12°
+            </p>
+
+            <p>
+                Status: Correct
+            </p>
+
+        </div>
+
+
+        <a
+            class="button"
+            href="{{ url_for('patient_history', patient_id=patient['id']) }}"
+        >
+            ← Back to Patient History
+        </a>
+
+    </div>
+
+
+</div>
+
+</body>
+
+</html>

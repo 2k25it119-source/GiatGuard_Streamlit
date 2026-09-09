@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>GiatGuard - Doctor Dashboard</title>
+
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            margin: 0;
+        }
+
+        .header {
+            background: #0b1f3a;
+            color: white;
+            padding: 25px;
+        }
+
+        .container {
+            width: 90%;
+            margin: 30px auto;
+        }
+
+        .cards {
+            display: flex;
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            flex: 1;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .number {
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        .actions {
+            background: white;
+            margin-top: 30px;
+            padding: 25px;
+            border-radius: 12px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 13px 20px;
+            margin: 8px;
+            background: #1769aa;
+            color: white;
+            text-decoration: none;
+            border-radius: 7px;
+        }
+
+        .button:hover {
+            background: #0d4f82;
+        }
+
+        .info {
+            background: white;
+            margin-top: 25px;
+            padding: 25px;
+            border-radius: 12px;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="header">
+
+    <h1>GiatGuard</h1>
+
+    <h2>Doctor Dashboard</h2>
+
+    <p>Welcome, Dr. {{ doctor_name }}</p>
+
+</div>
+
+
+<div class="container">
+
+    <h2>Dashboard Overview</h2>
+
+
+    <div class="cards">
+
+        <div class="card">
+
+            <h3>👥 Total Patients</h3>
+
+            <div class="number">
+                {{ total_patients }}
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>📊 Under Monitoring</h3>
+
+            <div class="number">
+                {{ monitoring_patients }}
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>⚠️ Abnormal Gait Alerts</h3>
+
+            <div class="number">
+                {{ abnormal_alerts }}
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="actions">
+
+        <h2>Patient Management</h2>
+
+
+        <a
+            class="button"
+            href="{{ url_for('register_patient', doctor_id=doctor_id) }}"
+        >
+            ➕ Register Patient
+        </a>
+
+
+        <a
+            class="button"
+            href="{{ url_for('patients', doctor_id=doctor_id) }}"
+        >
+            📋 View Patients
+        </a>
+
+
+        <a
+            class="button"
+            href="{{ url_for('patients', doctor_id=doctor_id) }}"
+        >
+            📈 Gait Analysis
+        </a>
+
+
+        <a
+            class="button"
+            href="{{ url_for('patients', doctor_id=doctor_id) }}"
+        >
+            🏃 Exercise Monitoring
+        </a>
+
+    </div>
+
+
+    <div class="info">
+
+        <h2>GiatGuard Monitoring</h2>
+
+        <p>
+            Monitor patient gait angle, plantar pressure,
+            walking progress and rehabilitation performance.
+        </p>
+
+        <p>
+            <b>Hardware:</b>
+            ESP32 + FSR Pressure Sensors + MPU6050 IMU
+        </p>
+
+    </div>
+
+
+</div>
+
+</body>
+
+</html>
